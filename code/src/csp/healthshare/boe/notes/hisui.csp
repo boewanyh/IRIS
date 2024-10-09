@@ -1,0 +1,41 @@
+<!-- hisui.csp -->
+<html>
+<head>
+
+<title>	HISUI </title>
+
+<!-- HISUI -->
+<link rel="stylesheet" type="text/css" href="../scripts_lib/hisui-0.1.0/dist/css/hisui.min.css" charset="utf-8">
+<script type="text/javascript" src="../scripts_lib/hisui-0.1.0/dist/js/jquery-1.11.3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="../scripts_lib/hisui-0.1.0/dist/js/jquery.hisui.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="../scripts_lib/hisui-0.1.0/dist/js/locale/hisui-lang-zh_CN.js" charset="utf-8"></script>
+<script type="text/javascript" src="../scripts_lib/websys.jquery.js" charset="utf-8"></script>
+<script type="text/javascript">
+	var dtseparator='-',dtformat='YMD';
+	if ($.fn.datebox && $.fn.datebox.defaults.rules.datebox){
+		$.fn.datebox.defaults.rules.datebox.message = '????,????:2019-01-06';
+		$.fn.datebox.defaults.formatter = function(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+		};
+	}
+	if ($.fn.dateboxq){
+		$.fn.dateboxq.defaults.formatter = function(date){
+			var y = date.getFullYear();
+			var m = date.getMonth()+1;
+			var d = date.getDate();
+			return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+		};
+	}
+</script>
+<script type="text/javascript" src="./hisui.js" charset="utf-8"></script>
+</head>
+
+<body>
+		<a class="hisui-linkbutton" data-options="iconCls:'icon-search'">??</a>
+		<a id="btn">??</a>
+		
+</body>
+</html>
