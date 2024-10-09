@@ -90,7 +90,6 @@ ClassMethod XMLReader()
 		w "Name:"_object.Relationships.GetAt(i).Name ,!
 	}
 	
-	
 	#; 2. %XML.XPATH.Document
 	s tSC = ##class(%XML.XPATH.Document).CreateFromString(str,.tDocument)
 	#; s tSC = ##class(%XML.XPATH.Document).CreateFromStream(Input,.tDocument)

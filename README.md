@@ -29,11 +29,11 @@ USER>
 
 ## 1.2 使用VSCode开发
 
-1. 扩展安装
+**1. 扩展安装**
 
 ![扩展安装](images/扩展安装.png)
 
-2. 配置
+**2. 配置**
 
 设置 -> 扩展 -> InterSystems Server Manager -> settings.json
 
@@ -110,7 +110,7 @@ USER>
 }
 ```
 
-3. 直连代码
+**3. 直连代码**
 
    a. Instersystems tools – All Servers – 【服务器名】– NameSpace – 命名空间，选择要编辑的代码，点击编辑；
 
@@ -121,7 +121,7 @@ USER>
 
    ![代码直连编辑](images/代码直连编辑.png)
 
-4. 客户端方式
+**4. 客户端方式**
 
    a. 本地建立文件夹：`./iris/code`；
 
@@ -139,7 +139,7 @@ USER>
 
 # 2 使用JSON指南
 
-## `notes.json`
+**`notes.json`**
 
 ```java
 Class notes.json Extends (%RegisteredObject, %JSON.Adaptor)
@@ -243,7 +243,7 @@ ClassMethod JSONAdaptor()
 }
 ```
 
-## `model.Person`
+**`model.Person`**
 
 ```java
 Class model.Person Extends (%RegisteredObject, %JSON.Adaptor)
@@ -261,7 +261,7 @@ Property Relationships As list Of model.Relationship;
 }
 ```
 
-## `model.Relationship`
+**`model.Relationship`**
 
 ```java
 Class model.Relationship Extends (%RegisteredObject, %JSON.Adaptor)
@@ -280,7 +280,7 @@ Property Name As %String;
 
 # 3 发送HTTP请求
 
-## `notes.HttpRequest`
+**`notes.HttpRequest`**
 
 ```java
 Class notes.HttpRequest Extends %RegisteredObject
@@ -369,19 +369,19 @@ ClassMethod SendHttpRequest()
 
 ## 4.1 OpenAPI 2.0规范创建REST服务示例
 
-### 1. 生成服务类：`/api/mgmnt`
+**1. 生成服务类：`/api/mgmnt`**
 
 `http://localhost:52773/api/mgmnt/v2/boe/notes.RESTful.AutoApp?IRISUsername=_system&IRISPassword=SYS`
 
 ![aotoapi](images/aotoapi.png)
 
-### 2. 应用程序：`/api/autoapp`
+**2. 应用程序：`/api/autoapp`**
 
 ![restfulweb](images/restfulweb.png)
 
 ![restfulwebuser](images/restfulwebuser.png)
 
-### 规范类：`notes.RESTful.AutoApp.spec`
+**规范类：`notes.RESTful.AutoApp.spec`**
 
 ```java
 Class notes.RESTful.AutoApp.spec Extends %REST.Spec [ ProcedureBlock ]
@@ -446,7 +446,7 @@ XData OpenAPI [ MimeType = application/json ]
 
 ```
 
-### 分派类：`notes.RESTful.AutoApp.disp`
+**分派类：`notes.RESTful.AutoApp.disp`**
 
 ```java
 /// Dispatch class defined by RESTSpec in notes.RESTful.AutoApp.spec
@@ -500,7 +500,7 @@ ClassMethod CreateResource() As %Status
 
 ```
 
-### 实现类：`notes.RESTful.AutoApp.impl`
+**实现类：`notes.RESTful.AutoApp.impl`**
 
 ```java
 /// Business logic class defined by OpenAPI in notes.RESTful.AutoApp.spec<br/>
@@ -554,15 +554,15 @@ ClassMethod CreateResource(payloadBody As %Stream.Object) As %Stream.Object
 
 ## 4.2 手动创建REST服务示例
 
-### 1. 应用程序：`/api`
+**1. 应用程序：`/api`**
 
 ![manualweb](images/manualweb.png)
 
 ![manualwebuser](images/manualwebuser.png)
 
-### 2. 分派类：`notes.RESTful.disp` `notes.RESTful.ManualApp.disp`
+**2. 分派类：`notes.RESTful.disp` `notes.RESTful.ManualApp.disp`**
 
-**notes.RESTful.disp**
+**`notes.RESTful.disp`**
 
 ```java
 /// 总分发类
@@ -582,7 +582,7 @@ XData UrlMap [ XMLNamespace = "https://www.intersystems.com/urlmap" ]
 
 ```
 
-**notes.RESTful.ManualApp.disp**
+**`notes.RESTful.ManualApp.disp`**
 
 ```java
 /// 分发类
@@ -640,7 +640,7 @@ ClassMethod CreateResource() As %Status
 
 ```
 
-### 3. 实现类：`notes.RESTful.ManualApp.impl`
+**3. 实现类：`notes.RESTful.ManualApp.impl`**
 
 ```java
 /// 实现类
@@ -680,7 +680,7 @@ ClassMethod CreateResource(payloadBody As %Stream.Object) As %DynamicObject
 
 # 5 使用XML指南
 
-## `Notes.XML`
+**`Notes.XML`**
 
 ```java
 Class notes.XML Extends (%RegisteredObject, %XML.Adaptor)
@@ -817,7 +817,7 @@ ClassMethod XMLReader()
 }
 ```
 
-## `model.Person` 
+**`model.Person` **
 
 ```java
 Class model.Person Extends (%RegisteredObject, %XML.Adaptor, %JSON.Adaptor)
@@ -835,7 +835,7 @@ Property Relationships As list Of model.Relationship;
 }
 ```
 
-## `model.Relationship`
+**`model.Relationship`**
 
 ```java
 Class model.Relationship Extends (%RegisteredObject, %XML.Adaptor, %JSON.Adaptor)
