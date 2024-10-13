@@ -11,6 +11,10 @@ ClassMethod XMLWrite()
 	s rObj.Name = "wanyh"
 	s rObj.Relation = "father"
 	d obj.Relationships.Insert(rObj)
+	s rObj = ##class(model.Relationship).%New()
+	s rObj.Name = "lumia"
+	s rObj.Relation = "mother"
+	d obj.Relationships.Insert(rObj)
 
 	//1. 对象写入XML输出
 	// 创建实例
@@ -22,6 +26,7 @@ ClassMethod XMLWrite()
 	#;	d writer.RootObject(obj)
 	#;	s xml = writer.GetXMLString()
 	#;	w xml ,!
+	s stream = ##class(%Stream.GlobalCharacter).%New()
 	s status = writer.OutputToStream(.stream)
 	i $$$ISERR(status) {d $System.Status.DisplayError(status) q}
 	s status = writer.RootObject(obj)
