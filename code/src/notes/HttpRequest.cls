@@ -63,7 +63,8 @@ ClassMethod SendHttpRequest()
 	#; s request.Https=1 //https连接
 	#; s request.Port=443
 	#; s request.SSLConfiguration="MySSLConfiguration"
-
+	#; s request.SSLCheckServerIdentity = 0 //禁用SSL证书检查
+	
 	#; s request.Username="10695144-4GA075FF" //认证方式1
 	#; s request.Password="welcome1"
 	#; d request.SetHeader("Authorization",token) //认证方式2  //设置标头
