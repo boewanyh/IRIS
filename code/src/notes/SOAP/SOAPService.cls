@@ -15,9 +15,9 @@ Parameter NAMESPACE = "https://temuri.org";
 /// Namespaces of referenced classes will be used in the WSDL.
 Parameter USECLASSNAMESPACES = 1;
 
-Method Test(Input As %String) As %String [ WebMethod ]
+Method Div(Input1 As %String, Input2 As %String) As %String [ WebMethod ]
 {
-    q Input_":"_$Random(1000)
+    q Input1_" / "_Input2_" = "_(Input1 / Input2)
 }
 
 }

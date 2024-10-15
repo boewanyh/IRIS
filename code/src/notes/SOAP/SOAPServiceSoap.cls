@@ -13,9 +13,9 @@ Parameter SERVICENAME = "SOAPService";
 /// This is the SOAP version supported by the service.
 Parameter SOAPVERSION = 1.1;
 
-Method Test(Input As %String) As %String [ Final, ProcedureBlock = 1, SoapBindingStyle = document, SoapBodyUse = literal, WebMethod ]
+Method Div(Input1 As %String, Input2 As %String) As %String [ Final, ProcedureBlock = 1, SoapBindingStyle = document, SoapBodyUse = literal, WebMethod ]
 {
- Quit ..WebMethod("Test").Invoke($this,"https://temuri.org/notes.SOAP.SOAPService.Test",.Input)
+ Quit ..WebMethod("Div").Invoke($this,"https://temuri.org/notes.SOAP.SOAPService.Div",.Input1,.Input2)
 }
 
 }
