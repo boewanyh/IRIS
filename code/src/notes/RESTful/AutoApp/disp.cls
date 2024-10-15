@@ -11,6 +11,9 @@ Parameter IgnoreWrites = 1;
 /// By default convert the input stream to Unicode
 Parameter CONVERTINPUTSTREAM = 1;
 
+/// The default response charset is utf-8
+Parameter CHARSET = "utf-8";
+
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
@@ -25,11 +28,7 @@ ClassMethod GetResourceById() As %Status
         Set response=##class(notes.RESTful.AutoApp.impl).GetResourceById()
         Do ##class(notes.RESTful.AutoApp.impl).%WriteResponse(response)
     } Catch (ex) {
-        Try {
-            Do ##class(notes.RESTful.AutoApp.impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
-        } Catch {
-            Do ##class(%REST.Impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
-        }
+        Do ##class(%REST.Impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
     }
     Quit $$$OK
 }
@@ -41,11 +40,7 @@ ClassMethod CreateResource() As %Status
         Set response=##class(notes.RESTful.AutoApp.impl).CreateResource(.ppayloadBody)
         Do ##class(notes.RESTful.AutoApp.impl).%WriteResponse(response)
     } Catch (ex) {
-        Try {
-            Do ##class(notes.RESTful.AutoApp.impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
-        } Catch {
-            Do ##class(%REST.Impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
-        }
+        Do ##class(%REST.Impl).%ReportRESTError(..#HTTP500INTERNALSERVERERROR,ex.AsStatus(),$parameter("notes.RESTful.AutoApp.impl","ExposeServerExceptions"))
     }
     Quit $$$OK
 }
