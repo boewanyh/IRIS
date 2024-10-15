@@ -12,6 +12,7 @@ ClassMethod CreateClient()
         i $$$ISERR(status) {d $System.Status.DisplayError(status) q}
 }
 
+/// Using SOAPClient
 ClassMethod UsingClient()
 {
         s client = ##class(notes.SOAP.SOAPServiceSoap).%New()
