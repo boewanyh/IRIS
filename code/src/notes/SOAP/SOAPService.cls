@@ -1,8 +1,8 @@
 /// 要访问测试页面，需切换至%SYS命名空间，运行:
 /// set ^SYS("Security","CSP","AllowClass","/csp/healthshare/boe/services/","%SOAP.WebServiceInfo")=1
 /// set ^SYS("Security","CSP","AllowClass","/csp/healthshare/boe/services/","%SOAP.WebServiceInvoke")=1
-/// http://localhost:52773/csp/healthshare/boe/services/notes.SOAPService.cls?WSDL
-Class notes.SOAPService Extends %SOAP.WebService
+/// http://localhost:52773/csp/healthshare/boe/services/notes.SOAP.SOAPService.cls?WSDL
+Class notes.SOAP.SOAPService Extends %SOAP.WebService
 {
 
 /// Name of the WebService.
@@ -17,7 +17,7 @@ Parameter USECLASSNAMESPACES = 1;
 
 Method Test(Input As %String) As %String [ WebMethod ]
 {
-    q $Random(1000)
+    q Input_":"_$Random(1000)
 }
 
 }
