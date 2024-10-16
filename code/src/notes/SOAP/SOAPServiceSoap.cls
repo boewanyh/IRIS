@@ -18,4 +18,15 @@ Method Div(Input1 As %String, Input2 As %String) As %String [ Final, ProcedureBl
  Quit ..WebMethod("Div").Invoke($this,"https://temuri.org/notes.SOAP.SOAPService.Div",.Input1,.Input2)
 }
 
+XData parameters
+{
+<parameters xmlns="http://www.intersystems.com/configuration" xmlns:cfg="http://www.intersystems.com/configuration">
+  <method name="Div">
+    <request>
+      <header name="BOESecurity" class="notes.SOAP.BOESecurity"/>
+    </request>
+  </method>
+</parameters>
+}
+
 }
