@@ -37,6 +37,8 @@ ClassMethod UsingClient()
 
  	do client.HeadersOut.SetAt(securityHeader, "BOESecurity")
 
+	s client.Timeout = 3 //超时时间 默认30s
+
 	try {
 		s ans = client.Div(5, 2)
 	} catch {
