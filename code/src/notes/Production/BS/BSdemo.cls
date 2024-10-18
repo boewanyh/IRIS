@@ -1,33 +1,27 @@
-/// http://localhost:52773/csp/healthshare/boe/services/notes.SOAP.SOAPService.cls?WSDL
-Class notes.SOAP.SOAPService Extends %SOAP.WebService
+Class notes.Production.BS.BSdemo Extends EnsLib.SOAP.Service
 {
 
-/// Name of the WebService.
-Parameter SERVICENAME = "SOAPService";
+Parameter ADAPTER;
 
-/// TODO: change this to actual SOAP namespace.
-/// SOAP Namespace for the WebService
-Parameter NAMESPACE = "https://temuri.org";
+Parameter NAMESPACE = "http://tempuri.org";
 
-/// Namespaces of referenced classes will be used in the WSDL.
-Parameter USECLASSNAMESPACES = 1;
+Parameter SERVICENAME = "BSdemo";
 
-Method Div(Input1 As %String, Input2 As %String) As %String [ WebMethod ]
+Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.GlobalCharacter [ WebMethod ]
 {
-    // 获取自定义标头值
+    set pOutput=##class(%Stream.GlobalCharacter).%New()
+
+    // 鉴权认证
     s AK = ..HeadersIn.GetAt("BOESecurity").AK
 	s UUID = ..HeadersIn.GetAt("BOESecurity").UUID
 	s Timestamp = ..HeadersIn.GetAt("BOESecurity").Timestamp
 	s Sign = ..HeadersIn.GetAt("BOESecurity").Sign
 
-    // 生成本地Sign对比
-    s SK = "rIacv39f8gZ5lH7ZMZ"
+    s SK = "rIacv39f8gZ5lH7ZMZ" // 本地存储的SK
     s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
 	s localSign = ..MD5HexStr(text)
     s tSC = ..CompareSign(localSign, Sign)
     if tSC'=$$$OK Quit "鉴权失败"
-    
-    q Input1_" / "_Input2_" = "_(Input1 / Input2)
 }
 
 /// md5加密并转成16进制字符
