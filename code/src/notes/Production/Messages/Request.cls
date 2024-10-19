@@ -5,7 +5,7 @@ Class notes.Production.Messages.Request Extends Ens.Request
 Property MessageCode As %String;
 
 /// 输入字符串
-Property InputString As %String(MAXLEN = 32767);
+Property InputString As %String;
 
 /// 输入字符流
 Property InputStream As %Stream.GlobalCharacter;
