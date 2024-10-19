@@ -5,7 +5,7 @@ Parameter ADAPTER;
 
 Parameter NAMESPACE = "http://tempuri.org";
 
-Parameter SERVICENAME = "BSdemo";
+Parameter SERVICENAME = "SOAP";
 
 Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.GlobalCharacter [ WebMethod ]
 {
