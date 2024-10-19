@@ -1,3 +1,4 @@
+/// http://localhost:52773/csp/healthshare/boe/services/notes.Production.BS.SOAP.cls?WSDL
 Class notes.Production.BS.SOAP Extends EnsLib.SOAP.Service
 {
 
@@ -7,9 +8,11 @@ Parameter NAMESPACE = "http://tempuri.org";
 
 Parameter SERVICENAME = "SOAP";
 
+Parameter USECLASSNAMESPACES = 1;
+
 Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.GlobalCharacter [ WebMethod ]
 {
-    set pOutput=##class(%Stream.GlobalCharacter).%New()
+    s pOutput = ##class(%Stream.GlobalCharacter).%New()
 
     // 鉴权认证
     s AK = ..HeadersIn.GetAt("BOESecurity").AK
@@ -22,6 +25,15 @@ Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.Glo
 	s localSign = ..MD5HexStr(text)
     s tSC = ..CompareSign(localSign, Sign)
     if tSC'=$$$OK Quit "鉴权失败"
+	s pInput = ##class(%Stream.GlobalCharacter).%New()
+	d pInput.Write("abc")
+
+	s request = ##class(notes.Production.Messages.Request).%New()
+	s request.MessageCode = Action
+	s request.InputStream = pInput
+
+	d pOutput.CopyFrom(pInput)
+	q pOutput
 }
 
 /// md5加密并转成16进制字符
