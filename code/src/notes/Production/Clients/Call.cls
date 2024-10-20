@@ -18,7 +18,7 @@ ClassMethod UsingClient()
 	s $ze=""
 	s client = ##class(notes.Production.Clients.SOAPSoap).%New()
 	// 赋值自定义标头值
-	set securityHeader = ##class(notes.SOAP.BOESecurity).%New()
+	set securityHeader = ##class(notes.Production.Clients.ns2.BOESecurity).%New()
 	set AK 		= "BOE"
 	set SK 		= "rIacv39f8gZ5lH7ZMZ"
 	set UUID 		= ##class(%SYSTEM.Util).CreateGUID()
