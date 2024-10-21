@@ -50,7 +50,7 @@ ClassMethod UsingClient()
 	q output
 }
 
-/// md5加密并转成16进制字符
+/// MD5加密并转成16进制字符
 ClassMethod MD5HexStr(val As %String)
 {
 	s ret = ""

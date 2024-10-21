@@ -26,7 +26,7 @@ Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.Glo
     s tSC = ..CompareSign(localSign, Sign)
     if tSC'=$$$OK Quit "鉴权失败"
 	s pInput = ##class(%Stream.GlobalCharacter).%New()
-	d pInput.Write("abc")
+	d pInput.Write("输入流")
 
 	s request = ##class(notes.Production.Messages.Request).%New()
 	s request.MessageCode = Action
@@ -39,7 +39,7 @@ Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.Glo
 	q pOutput
 }
 
-/// md5加密并转成16进制字符
+/// MD5加密并转成16进制字符
 ClassMethod MD5HexStr(val As %String)
 {
 	s ret = ""
