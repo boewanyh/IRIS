@@ -32,7 +32,10 @@ Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.Glo
 	s request.MessageCode = Action
 	s request.InputStream = pInput
 
-	d pOutput.CopyFrom(pInput)
+	s tSc = ..SendRequestSync("notes.Production.BP.BP1",request,.tResponse) //同步调用
+	//s tSC = ..SendRequestAsync("notes.Production.BP.BP1",request) //异步调用
+
+	d pOutput.CopyFrom(tResponse.OutputStream)
 	q pOutput
 }
 
@@ -40,21 +43,21 @@ Method Send(Action As %String, pInput As %Stream.GlobalCharacter) As %Stream.Glo
 ClassMethod MD5HexStr(val As %String)
 {
 	s ret = ""
-	Quit:val="" ""
-	set enc = ##class(%SYSTEM.Encryption).MD5Hash(val)
+	q:val="" ""
+	s enc = ##class(%SYSTEM.Encryption).MD5Hash(val)
 	f j=1:1:$l(enc) d
 	.s ascii = $a($e(enc,j)) 
-	.if ascii<16 set ret = ret_"0"_$zh(ascii)
-	.else  set ret = ret_$zh(ascii)
+	.if ascii<16 s ret = ret_"0"_$zh(ascii)
+	.else  s ret = ret_$zh(ascii)
 	q ret
 }
 
 /// 比较本地生成的sign和入参获取到的sign是否一致
 ClassMethod CompareSign(localSign As %String, otherSign As %String) As %Status
 {
-	Set localSign = $ZCONVERT(localSign, "U")
-	Set otherSign = $ZCONVERT(otherSign, "U")
-	Quit localSign = otherSign
+	s localSign = $ZCONVERT(localSign, "U")
+	s otherSign = $ZCONVERT(otherSign, "U")
+	q localSign = otherSign
 }
 
 /// 添加自定义消息头

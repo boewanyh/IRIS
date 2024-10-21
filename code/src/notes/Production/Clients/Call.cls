@@ -18,20 +18,20 @@ ClassMethod UsingClient()
 	s $ze=""
 	s client = ##class(notes.Production.Clients.SOAPSoap).%New()
 	// 赋值自定义标头值
-	set securityHeader = ##class(notes.Production.Clients.ns2.BOESecurity).%New()
-	set AK 		= "BOE"
-	set SK 		= "rIacv39f8gZ5lH7ZMZ"
-	set UUID 		= ##class(%SYSTEM.Util).CreateGUID()
-	set Timestamp 	= ..GetUNIXTimeStamp()
-	set text 		= "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID
-	set Sign 		= ..MD5HexStr(text)
+	s securityHeader = ##class(notes.Production.Clients.ns2.BOESecurity).%New()
+	s AK 		= "BOE"
+	s SK 		= "rIacv39f8gZ5lH7ZMZ"
+	s UUID 		= ##class(%SYSTEM.Util).CreateGUID()
+	s Timestamp 	= ..GetUNIXTimeStamp()
+	s text 		= "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID
+	s Sign 		= ..MD5HexStr(text)
 	
-	set securityHeader.AK 			= AK
-	set securityHeader.UUID 		= UUID
-	set securityHeader.Timestamp 	= Timestamp
-	set securityHeader.Sign 		= Sign
+	s securityHeader.AK 			= AK
+	s securityHeader.UUID 		= UUID
+	s securityHeader.Timestamp 	= Timestamp
+	s securityHeader.Sign 		= Sign
 
- 	do client.HeadersOut.SetAt(securityHeader, "BOESecurity")
+ 	d client.HeadersOut.SetAt(securityHeader, "BOESecurity")
 
 	s client.Timeout = 3 //超时时间 默认30s
 	s output = ##class(%Stream.GlobalCharacter).%New()
@@ -54,12 +54,12 @@ ClassMethod UsingClient()
 ClassMethod MD5HexStr(val As %String)
 {
 	s ret = ""
-	Quit:val="" ""
+	q:val="" ""
 	set enc = ##class(%SYSTEM.Encryption).MD5Hash(val)
 	f j=1:1:$l(enc) d
 	.s ascii = $a($e(enc,j)) 
-	.if ascii<16 set ret = ret_"0"_$zh(ascii)
-	.else  set ret = ret_$zh(ascii)
+	.if ascii<16 s ret = ret_"0"_$zh(ascii)
+	.else  s ret = ret_$zh(ascii)
 	q ret
 }
 
@@ -67,25 +67,25 @@ ClassMethod MD5HexStr(val As %String)
 /// Input		: aMillisecond是否携带毫秒
 ClassMethod GetUNIXTimeStamp(aMillisecond As %Integer = 0) As %Integer
 {
-	Set return=""
-	Set TimeStamp = $ZTIMESTAMP	//毫秒级内部时间戳(UTC)
+	s return=""
+	s TimeStamp = $ZTIMESTAMP	//毫秒级内部时间戳(UTC)
 	
-	Set date = $p(TimeStamp,",",1)		//日期
-	Set tmpTime = $e(TimeStamp,$l(date)+2,$l(TimeStamp))
-	Set tmpTime = $FN(tmpTime,"",3)		//毫秒尾数为0时会隐藏
-	Set time = $p(tmpTime,".",1)		//时间
-	Set millisecond = $p(tmpTime,".",2)	//毫秒
+	s date = $p(TimeStamp,",",1)		//日期
+	s tmpTime = $e(TimeStamp,$l(date)+2,$l(TimeStamp))
+	s tmpTime = $FN(tmpTime,"",3)		//毫秒尾数为0时会隐藏
+	s time = $p(tmpTime,".",1)		//时间
+	s millisecond = $p(tmpTime,".",2)	//毫秒
 	//转时区(UTC+8)
-	Set time = time + (8*3600)
-	If (time > 86400) {
-		Set date = date + 1
-		Set time = time - 86400
+	s time = time + (8*3600)
+	if (time > 86400) {
+		s date = date + 1
+		s time = time - 86400
 	}
 	//Unix时间戳是从1970-01-01开始，M时间从1841-01-01
-	Set Difference = 4070937600		//固定时间差
-	Set return = (date*24*3600) + time - Difference
-	Set:aMillisecond=1 return=return_millisecond
-	Quit return
+	s Difference = 4070937600		//固定时间差
+	s return = (date*24*3600) + time - Difference
+	s:aMillisecond=1 return=return_millisecond
+	q return
 }
 
 }
