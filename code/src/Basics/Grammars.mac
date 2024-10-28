@@ -1,0 +1,15 @@
+ROUTINE Basics.Grammars
+BasicsGrammars
+    /* 数据类型 */
+    s string = "This is a string"
+    w string,!
+    s string = "" // 空字符串:1 0
+    w $d(string) ,$l(string),!
+    s string = $c(0) // $CHAR(0):1 1 - 十六进制值为 00 的字符
+    w $d(string) ,$l(string),!
+    s string = "This string has ""quotes"" in it." // 转义引号
+    w string,!
+    s a = "Inter"
+    s b = "Systems"
+    s string = a_b //字符串连接
+    w string,!
