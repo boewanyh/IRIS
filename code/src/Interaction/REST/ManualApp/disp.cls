@@ -21,6 +21,20 @@ ClassMethod GetResourceById() As %Status
 	    	d ##class(%REST.Impl).%ReportRESTError(..#HTTP406NOTACCEPTABLE, $$$ERROR($$$RESTBadAccepts))
 	    	q  
 	    }
+
+        // 鉴权
+        // 1. 获取标头
+        s AK = %request.GetCgiEnv("ak", "")
+        s UUID = %request.GetCgiEnv("sk", "")
+        s Timestamp = %request.GetCgiEnv("timestamp", "")
+        s Sign = %request.GetCgiEnv("uuid", "")
+        // 2. 生成本地Sign对比
+        s SK = "rIacv39f8gZ5lH7ZMZ"
+        s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
+        s localSign = ..MD5HexStr(text)
+        s tSC = ..CompareSign(localSign, Sign)
+        if tSC '= $$$OK return {"errormessage": "鉴权失败"}
+
         s response = ##class(Interaction.REST.ManualApp.impl).GetResourceById()
         d ##class(%REST.Impl).%WriteResponse(response)
     } Catch (ex) {
@@ -39,6 +53,23 @@ ClassMethod CreateResource() As %Status
 	    	d ##class(%REST.Impl).%ReportRESTError(..#HTTP406NOTACCEPTABLE, $$$ERROR($$$RESTBadAccepts))
 	    	q  
 	    }
+
+        // 鉴权
+        // 1. 获取标头
+        s AK = %request.GetCgiEnv("ak", "")
+        s UUID = %request.GetCgiEnv("sk", "")
+        s Timestamp = %request.GetCgiEnv("timestamp", "")
+        s Sign = %request.GetCgiEnv("uuid", "")
+        // 2. 生成本地Sign对比
+        s SK = "rIacv39f8gZ5lH7ZMZ"
+        s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
+        s localSign = ..MD5HexStr(text)
+        s tSC = ..CompareSign(localSign, Sign)
+        if tSC '= $$$OK{
+            d ##class(%REST.Impl).%SetStatusCode("400")
+            return {"errormessage": "鉴权失败"}
+        } 
+
 	    if $isobject(%request.Content) s ppayloadBody=%request.Content
         s response = ##class(Interaction.REST.ManualApp.impl).CreateResource(.ppayloadBody)
         d ##class(%REST.Impl).%WriteResponse(response)
@@ -47,6 +78,27 @@ ClassMethod CreateResource() As %Status
         return {"errormessage": "Client error"}
     }
     q $$$OK
+}
+
+/// MD5加密并转成16进制字符
+ClassMethod MD5HexStr(val As %String)
+{
+	s ret = ""
+	q:val="" ""
+	s enc = ##class(%SYSTEM.Encryption).MD5Hash(val)
+	f j = 1 : 1 : $l(enc) d
+	.s ascii = $a($e(enc,j)) 
+	.if ascii < 16 s ret = ret_"0"_$zh(ascii)
+	.else  s ret = ret_$zh(ascii)
+	q ret
+}
+
+/// 比较本地生成的sign和入参获取到的sign是否一致
+ClassMethod CompareSign(localSign As %String, otherSign As %String) As %Status
+{
+	s localSign = $ZCONVERT(localSign, "U")
+	s otherSign = $ZCONVERT(otherSign, "U")
+	q localSign = otherSign
 }
 
 }
