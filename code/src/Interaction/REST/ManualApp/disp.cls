@@ -60,6 +60,7 @@ ClassMethod CreateResource() As %Status
         s UUID = %request.GetCgiEnv("sk", "")
         s Timestamp = %request.GetCgiEnv("timestamp", "")
         s Sign = %request.GetCgiEnv("uuid", "")
+        
         // 2. 生成本地Sign对比
         s SK = "rIacv39f8gZ5lH7ZMZ"
         s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
