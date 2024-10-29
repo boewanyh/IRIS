@@ -24,23 +24,27 @@ ClassMethod GetResourceById() As %Status
 
         // 鉴权
         // 1. 获取标头
-        s AK = %request.GetCgiEnv("ak", "")
-        s UUID = %request.GetCgiEnv("sk", "")
-        s Timestamp = %request.GetCgiEnv("timestamp", "")
-        s Sign = %request.GetCgiEnv("uuid", "")
+        s AK = %request.GetCgiEnv("HTTP_AK","")
+        s UUID = %request.GetCgiEnv("HTTP_UUID", "")
+        s Timestamp = %request.GetCgiEnv("HTTP_TIMESTAMP", "")
+        s Sign = %request.GetCgiEnv("HTTP_SIGN", "")
+
         // 2. 生成本地Sign对比
         s SK = "rIacv39f8gZ5lH7ZMZ"
         s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
         s localSign = ..MD5HexStr(text)
         s tSC = ..CompareSign(localSign, Sign)
-        if tSC '= $$$OK return {"errormessage": "鉴权失败"}
 
-        s response = ##class(Interaction.REST.ManualApp.impl).GetResourceById()
-        d ##class(%REST.Impl).%WriteResponse(response)
+        if tSC '= $$$OK {
+            s response = {"message": "鉴权失败"}
+        }else {
+            s response = ##class(Interaction.REST.ManualApp.impl).GetResourceById()
+        }
     } Catch (ex) {
         d ##class(%REST.Impl).%SetStatusCode("400")
-        return {"errormessage": "Client error"}
+        s response =  {"errormessage": "Client error"}
     }
+    d ##class(%REST.Impl).%WriteResponse(response)
     q $$$OK
 }
 
@@ -54,30 +58,31 @@ ClassMethod CreateResource() As %Status
 	    	q  
 	    }
 
-        // 鉴权
+         // 鉴权
         // 1. 获取标头
-        s AK = %request.GetCgiEnv("ak", "")
-        s UUID = %request.GetCgiEnv("sk", "")
-        s Timestamp = %request.GetCgiEnv("timestamp", "")
-        s Sign = %request.GetCgiEnv("uuid", "")
-        
+        s AK = %request.GetCgiEnv("HTTP_AK","")
+        s UUID = %request.GetCgiEnv("HTTP_UUID", "")
+        s Timestamp = %request.GetCgiEnv("HTTP_TIMESTAMP", "")
+        s Sign = %request.GetCgiEnv("HTTP_SIGN", "")
+
         // 2. 生成本地Sign对比
         s SK = "rIacv39f8gZ5lH7ZMZ"
         s text = "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID 
         s localSign = ..MD5HexStr(text)
         s tSC = ..CompareSign(localSign, Sign)
-        if tSC '= $$$OK{
-            d ##class(%REST.Impl).%SetStatusCode("400")
-            return {"errormessage": "鉴权失败"}
-        } 
 
-	    if $isobject(%request.Content) s ppayloadBody=%request.Content
-        s response = ##class(Interaction.REST.ManualApp.impl).CreateResource(.ppayloadBody)
-        d ##class(%REST.Impl).%WriteResponse(response)
+        if tSC '= $$$OK {
+            s response = {"message": "鉴权失败"}
+        }else {
+             if $isobject(%request.Content) s ppayloadBody=%request.Content
+            s response = ##class(Interaction.REST.ManualApp.impl).CreateResource(.ppayloadBody)
+            
+        }
     } Catch (ex) {
         d ##class(%REST.Impl).%SetStatusCode("400")
-        return {"errormessage": "Client error"}
+        s response =  {"errormessage": "Client error"}
     }
+    d ##class(%REST.Impl).%WriteResponse(response)
     q $$$OK
 }
 
