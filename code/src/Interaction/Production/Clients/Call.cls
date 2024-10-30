@@ -12,22 +12,6 @@ ClassMethod CreateClient()
 	i $$$ISERR(status) {d $System.Status.DisplayError(status) q}
 }
 
-/// 生成随机字符串 SK，length为SK长度
-ClassMethod CreateSKValue(length As %Integer) As %String
-{
-	Set characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@"
-	Set charLength = $LENGTH(characters)
-
-	Set str = ""
-	For i=1:1:length {
-		Set num = $RANDOM(charLength)
-		Set:num=0 num=1
-		Set char = $EXTRACT(characters, num)
-		Set str = str _ char
-	}
-	Quit str
-}
-
 /// Using SOAPClient
 ClassMethod UsingClient()
 {
@@ -54,7 +38,7 @@ ClassMethod UsingClient()
 	try {
 		s input = ##class(%Stream.GlobalCharacter).%New()
 		d input.Write("abc")
-		s output = client.Send("Action", input)
+		s output = client.Send("SOAP", input)
 	} catch {
 		if $ze["<ZSOAP>" {
 			// 如果 SOAP 错误, $ZERROR的值以<ZSOAP>开头, 并且%objlasterror包含由接收到的 SOAP 错误
@@ -64,6 +48,48 @@ ClassMethod UsingClient()
         }
 	}
 	q output
+}
+
+/// Sending HTTP Request
+ClassMethod SendHttpRequest()
+{
+	/* 创建%Net.HttpRequest的实例，设置实例属性 */
+    s request = ##class(%Net.HttpRequest).%New()
+	s request.Server = "localhost" //IP
+	s request.Port = "9980" //端口
+	s request.Timeout = 3 //等待超时
+
+	/* 认证标头*/
+	s AK 		= "BOE"
+	s SK 		= "rIacv39f8gZ5lH7ZMZ"
+	s UUID 		= ##class(%SYSTEM.Util).CreateGUID()
+	s Timestamp	= ..GetUNIXTimeStamp()
+	s text 		= "ak="_AK_"sk="_SK_"timestamp="_Timestamp_"uuid="_UUID
+	s Sign 		= ..MD5HexStr(text)
+	d request.SetHeader("AK",AK)
+	d request.SetHeader("UUID",UUID)
+	d request.SetHeader("Timestamp",Timestamp)
+	d request.SetHeader("Sign",Sign)
+
+	/* 发送HTTP POST请求 */
+	d request.EntityBody.SetAttribute("CONTENT-TYPE","application/json")  //请求主体
+	s jsonStream = ##class(%Stream.GlobalCharacter).%New()
+	s jsonObj = {}
+	s jsonObj.Id = "1"
+	d jsonObj.%ToJSON(jsonStream) 
+	d request.EntityBody.CopyFrom(jsonStream)
+	s status = request.Post()
+
+	/* 接收HTTP响应 */
+	if $$$ISERR(status){
+		w $system.Status.GetErrorText(status) ,!
+	}else{
+		s response = request.HttpResponse
+		s statusCode = response.StatusCode
+		s data = response.Data
+		s dataObj = {}.%FromJSON(data)
+		w dataObj.message ,!
+	}
 }
 
 /// MD5加密并转成16进制字符
@@ -102,6 +128,22 @@ ClassMethod GetUNIXTimeStamp(aMillisecond As %Integer = 0) As %Integer
 	s return = (date * 24 * 3600) + time - Difference
 	s:aMillisecond=1 return = return_millisecond
 	q return
+}
+
+/// 生成随机字符串 SK，length为SK长度
+ClassMethod CreateSKValue(length As %Integer) As %String
+{
+	Set characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@"
+	Set charLength = $LENGTH(characters)
+
+	Set str = ""
+	For i=1:1:length {
+		Set num = $RANDOM(charLength)
+		Set:num=0 num=1
+		Set char = $EXTRACT(characters, num)
+		Set str = str _ char
+	}
+	Quit str
 }
 
 }

@@ -12,7 +12,12 @@ Method Call(pRequest As Interaction.Production.Messages.Request, Output pRespons
     s InputStream = pRequest.InputStream
 
     s OutputStream = ##class(%Stream.GlobalCharacter).%New()
-    d OutputStream.Write("返回流")
+    if Action = "SOAP" {
+      d OutputStream.Write("返回流")
+    }
+    if Action = "REST" {
+      d OutputStream.Write("{""message"":""success""}")
+    }
     s pResponse.OutputStream = OutputStream
     q $$$OK
 }

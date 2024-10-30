@@ -1,13 +1,10 @@
-Class Interaction.Production.BS.REST Extends Ens.BusinessService
+Class Interaction.Production.BS.REST Extends EnsLib.HTTP.Service
 {
 
 Parameter ADAPTER = "EnsLib.HTTP.InboundAdapter";
 
-Property Adapter As EnsLib.HTTP.InboundAdapter;
-
 Method OnProcessInput(pStreamIn As %CharacterStream, Output pStreamOut As %CharacterStream) As %Status
 {
-  
     s request = ##class(Interaction.Production.Messages.Request).%New()
     s request.MessageCode = "REST"
     s request.InputStream = pStreamIn
