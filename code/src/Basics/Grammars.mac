@@ -1,6 +1,6 @@
 ROUTINE Basics.Grammars
-BasicsGrammars
-    /* 数据类型 */
+DataTypes
+    /* 1. 数据类型 */
     //字符串
     s string = "" // 空字符串
     s string = $c(0) // 空，十六进制值为 00 的字符
@@ -28,4 +28,31 @@ BasicsGrammars
     w $fn("-6.25198", "-", 3),! // 6.252 绝对值
     w $justify("6.25198", "", 3),! // 6.252 四舍五入
    
-    
+    //对象
+    s newAirport = ##class(Basics.Models.Airport).%New()
+    w newAirport,!
+    w $ISOBJECT(newAirport),! // 是否是对象
+
+    //持久多维数组（全局）
+    s ^x = 0
+    s ^x("a") = 1
+    s ^x("a","b") = 2
+    zw ^x("a")
+    w $d(^y),! // 0 未定义
+    w $d(^x("a")),! // 11
+    w $d(^x("a","b")),! // 1
+
+    //布尔 非0为真, 非数字字符串为假
+    if -7 {w "true",! }
+    else { w "false",! }
+    if "abc" {w "true",! }
+    else { w "false",! }
+
+    //日期
+    w $H,! // 日期,时间 67148,55413
+    w $now(),! // 日期,时间.秒 67148,55413.153962305
+    w $zdt($H, 3),! // 转为显示格式 2024-11-04 15:23:33
+    w $zd(67148, 3),! // 2024-11-04
+    w $zdh("2024-11-04", 3),! // 67148
+    w $zt(55413),! // 15:23:33
+    w $zth("15:23:33"),! // 55413
