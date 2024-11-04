@@ -1,15 +1,31 @@
 ROUTINE Basics.Grammars
 BasicsGrammars
     /* 数据类型 */
-    s string = "This is a string"
-    w string,!
-    s string = "" // 空字符串:1 0
-    w $d(string) ,$l(string),!
-    s string = $c(0) // $CHAR(0):1 1 - 十六进制值为 00 的字符
-    w $d(string) ,$l(string),!
+    //字符串
+    s string = "" // 空字符串
+    s string = $c(0) // 空，十六进制值为 00 的字符
     s string = "This string has ""quotes"" in it." // 转义引号
     w string,!
     s a = "Inter"
     s b = "Systems"
     s string = a_b //字符串连接
     w string,!
+    w $e("123456", 2, 4),! // 234 截取
+    w $l("a^b^c^d","^"),! // 4 长度
+    w $p("a^b^c^d", "^", 2),! // b 分隔符取值
+    w $p("a^b^c^d", "^", 2, 3),! // b^c 分隔符取值
+    w $replace("red black red wite", "red", "green"),! // green black green wite 字符串替换
+    w $tr("red black red wite", "rbw", "RBW"),! // Red Black Red Wite 逐字符替换
+
+    //数字
+    w +"0000.7dwarves",! // .7
+    w "7dwares" + 2,! // 9
+    w "+24/7" + 2,! // 26
+    w "7.2.34" + 2,! // 9.2
+    w 3e4,! // 30000
+    w 1 + 2 * 3,! // 9
+    w $fn(".25198", "", 3),! // 0.252 格式化 四舍五入
+    w $fn("-6.25198", "-", 3),! // 6.252 绝对值
+    w $justify("6.25198", "", 3),! // 6.252 四舍五入
+   
+    
