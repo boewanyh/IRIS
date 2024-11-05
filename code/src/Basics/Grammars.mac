@@ -1,6 +1,6 @@
 ROUTINE Basics.Grammars
 DataTypes
-    /* 1. 数据类型 */
+    /* 数据类型 */
     //字符串
     s string = "" // 空字符串
     s string = $c(0) // 空，十六进制值为 00 的字符
@@ -56,3 +56,6 @@ DataTypes
     w $zdh("2024-11-04", 3),! // 67148
     w $zt(55413),! // 15:23:33
     w $zth("15:23:33"),! // 55413
+
+Variables
+    /* 变量 */
