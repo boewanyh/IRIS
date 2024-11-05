@@ -23,7 +23,6 @@ DataTypes
     w "+24/7" + 2,! // 26
     w "7.2.34" + 2,! // 9.2
     w 3e4,! // 30000
-    w 1 + 2 * 3,! // 9
     w $fn(".25198", "", 3),! // 0.252 格式化 四舍五入
     w $fn("-6.25198", "-", 3),! // 6.252 绝对值
     w $justify("6.25198", "", 3),! // 6.252 四舍五入
@@ -59,3 +58,59 @@ DataTypes
 
 Variables
     /* 变量 */
+    //局部变量：进程内存中，程序块访问;所有命名空间可访问
+    new //所有变量未定义
+    s myvar1 = 1
+    s myvar2 = 2
+    new myvar1 // 未定义myvar1
+    new (myvar2) // 除myvar2外未定义
+    s %zvar3 = 3 // 公共变量
+    w myvar2,!
+    k myvar2 //删除局部变量
+
+    //全局变量：数据库中，命名空间访问
+    s ^myglobal = "stored in the current namespace" // 当前命名空间访问，或作映射
+    s ^%zmyglobal = "Use in all namespace" // 百分比变量：所有命名空间可访问
+    w ^|"BOE"|myglobal,! // 访问指定命名空间全局变量
+
+    //进程私有全局变量：进程访问，结束删除 - 旨在用于大数据值，替代Temp，在进程终止时自动清理;所有命名空间可访问
+    s ^||name = "Tom"
+    
+    //系统变量：$前缀
+    w $JOB,! // 进程id
+
+OperatorsAndExpressions
+    /* 运算符和表达式 */
+    //优先级：严格按照从左到右
+    w 1 + 2 * 3,! // 9
+    w 1 + (2 * 3),! // 7
+    w 3 && 2 = 2,! // 0
+
+    //逻辑表达式：非零数值为真，非数字字符串为假
+    //常规逻辑运算符（& 和 !） - 所有被执行
+    if $$One() & $$Two() {
+        w !,"True"
+    }else {
+        w !,"false"
+    }
+    //短路逻辑运算符（&& 和 ||）- 结果确定后其他不执行
+    if $$One() && $$Two() {
+        w !,"True"
+    }else {
+        w !,"false"
+    }
+    if $$One() , $$Two() { //,与&&效果一样
+        w !,"True"
+    }else {
+        w !,"false"
+    }
+
+    //算数运算符
+
+One()
+    w !,"One"
+    q 0
+
+Two()
+    w !,"Two"
+    q 1
