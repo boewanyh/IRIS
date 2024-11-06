@@ -139,7 +139,7 @@ OperatorsAndExpressions
     w match ,!
 
     //间接运算符(@):对命令行、命令或命令参数的部分或全部的动态运行时替换
-    s x = "One"
+    s x = "One()"
     d @x // One
 
 One()
@@ -149,3 +149,66 @@ One()
 Two()
     w "Two",!
     q 1
+
+Commands
+    s a = 1, b = 2
+    s (c, d) = 3
+    w:a=1 1 ,! // :后置条件表达式
+
+    d Two^Basics.Grammars() // 运行例程
+    d ##class(Basics.Models.Airport).DisplayAirports() // 运行类方法
+
+    s x = "d Two^Basics.Grammars()"
+    XECUTE x // 可用于动态运行
+
+    j One() // job 另起进程运行
+
+    //条件语句
+    s x = 1
+    if x = 1 {
+        w "x = 1",!
+    } elseif x = 2 {
+        w "x = 2",!
+    } else {
+        w "x = ?",!
+    }
+
+    //循环语句
+    for i = 1 : 1 : 5 {
+        w i,!
+    }
+    for x = "a","b","c" {
+        w x,!
+    }
+    s x = 0
+    for {
+        q:x=5
+        s x = x + 1
+        w x,!   
+    }
+    s x = 0
+    while(x < 5) {
+        s x = x + 1
+        w x,! 
+    }
+    s x = 0
+    d {
+        s x = x + 1
+        w x,!
+    }while(x < 5)
+
+    //输入输出
+    s jobj = {"name":"Fred","city":"Bedrock"}
+    w jobj,! // 7@%Library.DynamicObject
+    zw jobj // jobj={"name":"Fred","city":"Bedrock"}  ; <DYNAMIC OBJECT>
+    s fullList = $LISTBUILD("Red","Blue","Green","Yellow")
+    zw fullList // fullList=$lb("Red","Blue","Green","Yellow")
+    s ^a = "a", ^a(0) = 0, ^a(1) = 1
+    zw ^a //^a="a" ^a(0)=0 ^a(1)=1
+
+    //q:退出代码块 return:退出例程
+    for i = 1 : 1 : 5 {
+        //q:i=1
+        return:i=1
+    }
+    w "END",!
