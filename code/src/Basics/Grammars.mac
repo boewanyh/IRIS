@@ -1,4 +1,5 @@
 ROUTINE Basics.Grammars
+#define StringMacro "Hello, World!" // 使用 $$$StringMacro
 DataTypes
     /* 数据类型 */
     //字符串
@@ -14,8 +15,13 @@ DataTypes
     w $l("a^b^c^d","^"),! // 4 长度
     w $p("a^b^c^d", "^", 2),! // b 分隔符取值
     w $p("a^b^c^d", "^", 2, 3),! // b^c 分隔符取值
+    w $find("Once upon a time...", "upon"),! // 搜索字符串，并返回后面字符的位置; 未找到返回0
     w $replace("red black red wite", "red", "green"),! // green black green wite 字符串替换
     w $tr("red black red wite", "rbw", "RBW"),! // Red Black Red Wite 逐字符替换
+    w $zcvt("abc","U"),! // ABC 转大写
+    w $zcvt("ABC","L"),! // abc 转小写
+    w $zcvt("中文","O","UTF8"),! // 输出编码转换
+    w $zcvt($zcvt("中文","O","UTF8"),"I","UTF8"),! // 输入编码转换
 
     //数字
     w +"0000.7dwarves",! // .7
@@ -142,6 +148,9 @@ OperatorsAndExpressions
     s x = "One()"
     d @x // One
 
+    //宏
+    w $$$StringMacro,!
+
 One()
     w "One",!
     q 0
@@ -151,6 +160,7 @@ Two()
     q 1
 
 Commands
+    /* 命令 */
     s a = 1, b = 2
     s (c, d) = 3
     w:a=1 1 ,! // :后置条件表达式
@@ -212,3 +222,46 @@ Commands
         return:i=1
     }
     w "END",!
+
+main
+    /* 自定义代码模块 */
+    d Add1(1, 2) // 函数调用
+    w $$Add2(1, 2),! // 过程调用
+    w c,! //公共变量
+    s output = $$Add3(1, 2, .result) // 引用传递
+    w result,!
+    w $$Add4(1, 2, 3),! // 可变参数
+    s d(1) =1
+    s d(2) =2
+    d Add5(.d) // 可变参数引用传递
+
+
+Add1(a, b)
+    /* 函数 调用： Add^Basics.Grammars(1,3)*/
+    w a + b,!
+
+Add2(a, b) [c, d] PUBLIC {
+    /* 过程 c,d 为公共变量。调用： $$Add^Basics.Grammars(1,3)*/
+    s c = "c"
+    return a + b
+}
+Add3(a, b, &c) {
+   s c = a + b
+   return 0     
+}
+Add4(pars...) { // 可变参数
+    s sum = 0
+    for i = 1 : 1 : pars {
+        s sum = sum + pars(i)
+    }
+    q sum
+}
+Add5(&pars...)
+    s sum = 0
+    s item = ""
+    for {
+        s item = $O(pars(1,item))
+        q:item=""
+        s sum = sum + item
+    }
+    w sum,!
