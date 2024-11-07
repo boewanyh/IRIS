@@ -1,0 +1,16 @@
+ROUTINE Basics.Transactions
+ROU        
+    /* 事务 */
+    s $zt = "ERROR"
+    TS
+    w "Transaction1 Start",!
+    s ^ZGLO(1)=100
+    s ^ZGLO=error
+    s ^ZGLO(1,1)=200 
+    TC 
+    w "Transaction1 Committed",!
+    q
+ERROR        
+    TRO
+    w !,"Transaction failed." 
+    q
