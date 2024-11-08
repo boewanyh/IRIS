@@ -39,13 +39,14 @@ DataTypes
     Write $ISOBJECT(newAirport),! // 是否是对象
 
     //持久多维数组（全局）
-    Set ^x = 0
     Set ^x("a") = 1
     Set ^x("a","b") = 2
-    ZWrite ^x("a")
-    Write $DATA(^y),! // 0 未定义
-    Write $DATA(^x("a")),! // 11
-    Write $DATA(^x("a","b")),! // 1
+    Set ^y("a") = 1
+    ZWrite ^x("a") // ^x("a")=1 ^x("a","b")=2
+    Write $DATA(^x("a")),! // 11 存在有数据且有后代
+    Write $DATA(^x("a","b")),! // 1 存在且有数据，没有后代
+    Write $DATA(^y),! // 10 有后代,但本身不包含数据。引用本身会UNDEFINED
+    Write $DATA(^z),! // 0 未定义
 
     //布尔 非0为真, 非数字字符串为假
     If -7 {Write "true",! }
