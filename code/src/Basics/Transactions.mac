@@ -11,6 +11,6 @@ ROU
     Write "Transaction1 Committed",!
     Quit
 ERROR        
-    Trollback
+    Trollback 1
     Write !,"Transaction failed." 
     Quit
