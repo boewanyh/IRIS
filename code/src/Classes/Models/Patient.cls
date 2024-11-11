@@ -1,4 +1,4 @@
-Class Classes.Models.Patient Extends %RegisteredObject
+Class Classes.Models.Patient Extends %Persistent
 {
 
 /// 类常量
@@ -20,5 +20,35 @@ Property PhoneNum As %String;
 Property HomeAddress As Classes.Models.Address;
 
 Index IDNumberIndex On IDNumber [ Unique ];
+
+Storage Default
+{
+<Data name="PatientDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>Name</Value>
+</Value>
+<Value name="3">
+<Value>IDNumber</Value>
+</Value>
+<Value name="4">
+<Value>BirthDate</Value>
+</Value>
+<Value name="5">
+<Value>PhoneNum</Value>
+</Value>
+<Value name="6">
+<Value>HomeAddress</Value>
+</Value>
+</Data>
+<DataLocation>^Classes.Models.PatientD</DataLocation>
+<DefaultData>PatientDefaultData</DefaultData>
+<IdLocation>^Classes.Models.PatientD</IdLocation>
+<IndexLocation>^Classes.Models.PatientI</IndexLocation>
+<StreamLocation>^Classes.Models.PatientS</StreamLocation>
+<Type>%Storage.Persistent</Type>
+}
 
 }
