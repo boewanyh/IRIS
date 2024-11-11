@@ -13,6 +13,12 @@ Property IDNumber As %String;
 /// 出生日期
 Property BirthDate As %Date;
 
+/// 身高
+Property HeightMeter As %String;
+
+/// 体重
+Property WeightKg As %String;
+
 /// 手机号
 Property PhoneNum As %String;
 
@@ -20,6 +26,14 @@ Property PhoneNum As %String;
 Property HomeAddress As Classes.Models.Address;
 
 Index IDNumberIndex On IDNumber [ Unique ];
+
+/// 计算BMI
+/// 实例方法
+Method GetBMI() As %Numeric
+{
+  Set bmi = ..WeightKg / (..HeightMeter**2)
+  Quit bmi
+}
 
 Storage Default
 {
@@ -37,9 +51,15 @@ Storage Default
 <Value>BirthDate</Value>
 </Value>
 <Value name="5">
-<Value>PhoneNum</Value>
+<Value>HeightMeter</Value>
 </Value>
 <Value name="6">
+<Value>WeightKg</Value>
+</Value>
+<Value name="7">
+<Value>PhoneNum</Value>
+</Value>
+<Value name="8">
 <Value>HomeAddress</Value>
 </Value>
 </Data>
