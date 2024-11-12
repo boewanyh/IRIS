@@ -1,3 +1,5 @@
+Import Basics
+
 /// 注册类
 Class Classes.Method Extends %RegisteredObject
 {
@@ -5,10 +7,7 @@ Class Classes.Method Extends %RegisteredObject
 /// 创建保存实例
 ClassMethod SavePatient() As %Status
 {
-  Kill ^Classes.Models.EmployeeD
-  Kill ^Classes.Models.EmployeeI
-  Kill ^Classes.Models.AddressD
-  Kill ^Classes.Models.AddressI
+  Kill ^Classes.Models.EmployeeD, ^Classes.Models.EmployeeI, ^Classes.Models.AddressD, ^Classes.Models.AddressI
    // 创建对象
   Set person = ##class(Classes.Models.Employee).%New()
   Set person.Name = "wanyh"
@@ -22,6 +21,7 @@ ClassMethod SavePatient() As %Status
   Set address.City = "合肥市"
   Set address.Country = "肥西县"
   Set person.HomeAddress = address
+  w person.#CURRNTIME,! //引用类常量
   // 保存实例
   Set status = person.%Save()
   If $$$ISERR(status) {

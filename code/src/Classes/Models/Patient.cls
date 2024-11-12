@@ -2,7 +2,7 @@ Class Classes.Models.Patient Extends %RegisteredObject
 {
 
 /// 类常量
-Parameter MONTH = 12;
+Parameter CURRNTIME = {$ZDATETIME($HOROLOG, 3)};
 
 /// 姓名
 Property Name As %String [ Required ];
