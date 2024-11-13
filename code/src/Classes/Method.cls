@@ -1,6 +1,5 @@
 Import Basics
 
-/// 注册类
 Class Classes.Method Extends %RegisteredObject
 {
 

@@ -1,3 +1,4 @@
+/// 注册类
 Class Classes.Models.Patient Extends %RegisteredObject
 {
 
