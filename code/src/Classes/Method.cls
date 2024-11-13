@@ -21,7 +21,7 @@ ClassMethod SavePatient() As %Status
   Set address.City = "合肥市"
   Set address.Country = "肥西县"
   Set person.HomeAddress = address
-  w person.#CURRNTIME,! //引用类常量
+  Write person.#CURRNTIME,! //引用类常量
   // 保存实例
   Set status = person.%Save()
   If $$$ISERR(status) {
@@ -32,13 +32,50 @@ ClassMethod SavePatient() As %Status
 }
 
 /// 获取实例
-ClassMethod GetPatient() As %String
+ClassMethod GetPatientByIDNumber(IDNumber As %String) As %String
 {
+  // 索引
+  Set id = $ORDER(^Classes.Models.EmployeeI("IDNumberIndex", " "_IDNumber, ""))
   // 打开实例
-  Set person = ##class(Classes.Models.Employee).%OpenId(1) //类方法 ClssMethod
+  Set person = ##class(Classes.Models.Employee).%OpenId(id) //类方法 ClssMethod
   Set name = person.Name
   Set bmi = person.GetBMI() //实例方法 Method
   Quit name_"^"_bmi
+}
+
+/// 参数传递
+ClassMethod Add(x As %Numeric, y As %Numeric, ByRef result As %Numeric)
+{
+  Set result = x + y
+  Quit $$$OK
+}
+
+ClassMethod CreateObject(Output newObj As Classes.Models.Employee)
+{
+  Set newObj = ##class(Classes.Models.Employee).%New()
+  Quit $$$OK
+}
+
+ClassMethod MultiArg(args... As %String)
+{
+    For i = 1 : 1 : args {
+        Write "Argument[", i , "]:",  $GET(args(i), "<NULL>"), !
+    }
+}
+
+ClassMethod Arguments()
+{
+  Do ..Add(3, 4, .result) //引用传递
+  Write result,!
+
+  Do ..CreateObject(.employee) //引用传递
+  ZWrite employee
+
+  Do ..MultiArg("a", "b", , "c") //多参数传递
+
+  Set cls = "Classes.Method"
+  Set clsmeth = "MultiArg"
+  Do $CLASSMETHOD(cls, clsmeth, "a", "b") //执行方法
 }
 
 }

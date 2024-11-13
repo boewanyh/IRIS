@@ -10,6 +10,13 @@ Property Department As %String;
 
 Index IDNumberIndex On IDNumber [ Unique ];
 
+/// 重载
+Method GetBMI() As %Numeric
+{
+  Set bmi = ##super() //调用父类
+  Quit bmi_"!"
+}
+
 Storage Default
 {
 <Data name="EmployeeDefaultData">
