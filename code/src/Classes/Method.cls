@@ -7,8 +7,8 @@ Class Classes.Method Extends %RegisteredObject
 ClassMethod SavePatient() As %Status
 {
   Kill ^Classes.Models.EmployeeD, ^Classes.Models.EmployeeI, ^Classes.Models.AddressD, ^Classes.Models.AddressI
-   // 创建对象
-  Set person = ##class(Classes.Models.Employee).%New()
+
+  Set person = ##class(Classes.Models.Employee).%New() //创建一个对象并返回指向该对象的OREF，使用$ISOBJECT可判断是否包含OREF
   Set person.Name = "wanyh"
   Set person.IDNumber = "342622199304055257"
   Set person.HeightMeter = 1.77
@@ -20,7 +20,11 @@ ClassMethod SavePatient() As %Status
   Set address.City = "合肥市"
   Set address.Country = "肥西县"
   Set person.HomeAddress = address
-  Write person.#CURRNTIME,! //引用类常量
+  Write person.#CURRNTIME,! //使用引用类常量
+
+  set status = person.%ValidateObject() //验证实例的属性
+  do $system.OBJ.DisplayError(status)
+
   // 保存实例
   Set status = person.%Save()
   If $$$ISERR(status) {
@@ -39,6 +43,10 @@ ClassMethod GetPatientByIDNumber(IDNumber As %String) As %String
   Set person = ##class(Classes.Models.Employee).%OpenId(id) //类方法 ClssMethod
   Set name = person.Name
   Set bmi = person.GetBMI() //实例方法 Method
+
+  write person.%ClassName(1),!, $CLASSNAME(person),! //返回实例的对象
+  set NewPerson = person.%ConstructClone() //克隆对象 不同的OREF
+
   Quit name_"^"_bmi
 }
 
