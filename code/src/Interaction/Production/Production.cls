@@ -12,6 +12,8 @@ XData ProductionDefinition
   </Item>
   <Item Name="Interaction.Production.BO.SOAP" Category="" ClassName="Interaction.Production.BO.SOAP" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
   </Item>
+  <Item Name="Interaction.Production.BS.REST" Category="" ClassName="Interaction.Production.BS.REST" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
 </Production>
 }
 
