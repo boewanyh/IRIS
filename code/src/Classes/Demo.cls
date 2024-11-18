@@ -8,7 +8,8 @@ ClassMethod SavePatient() As %Status
 {
   Kill ^Classes.Models.PatientD, ^Classes.Models.PatientI, ^Classes.Models.PatientS, ^Classes.Models.AddressD
 
-  Set person = ##class(Classes.Models.Patient).%New() //创建一个对象并返回指向该对象的OREF，使用$ISOBJECT可判断是否包含OREF
+  //创建一个对象并返回指向该对象的OREF，使用$ISOBJECT可判断是否包含OREF
+  Set person = ##class(Classes.Models.Patient).%New() 
   Set person.Name = "wanyh"
   Set person.IDNumber = "342622199304055257"
   Set person.HeightMeter = 1.77
@@ -35,16 +36,6 @@ ClassMethod SavePatient() As %Status
     Quit status
   }
   Quit status
-
-  #; ^Classes.Models.PatientD	=	1
-  #; ^Classes.Models.PatientD(1)	=	$lb("","wanyh","342622199304055257","",1.77,53,"1","1")
-  #; ^Classes.Models.PatientI("IDNumberIndex"," 342622199304055257",1)	=	""
-  #; ^Classes.Models.PatientI("NameIndex"," WANYH",1)
-  #; ^Classes.Models.PatientS	=	1
-  #; ^Classes.Models.PatientS(1)	=	"1,15" //下标事image的Id，不是patient的Id
-  #; ^Classes.Models.PatientS(1,1)	=	"person's image!"
-  #; ^Classes.Models.AddressD	=	1
-  #; ^Classes.Models.AddressD(1)	=	$lb("","安徽省","合肥市","肥西县")
 }
 
 /// 获取实例

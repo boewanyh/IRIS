@@ -6,13 +6,19 @@ Class Classes.Models.Patient Extends %Persistent
 Parameter CURRNTIME = {$ZDATETIME($HOROLOG, 3)};
 
 /// 姓名
-Property Name As %String [ Required ];
+Property Name As %String(MAXLEN = 500) [ Required ];
+
+/// 性别
+Property Sex As %String(VALUELIST = ",M,F");
 
 /// 身份证号
 Property IDNumber As %String(PATTERN = "18N") [ Required ];
 
 /// 出生日期
 Property BirthDate As %Date;
+
+/// 年龄
+Property Age As %Integer [ SqlComputeCode = {set {*}={BirthDate}}, SqlComputed ];
 
 /// 身高
 Property HeightMeter As %Numeric;
@@ -50,21 +56,27 @@ Storage Default
 <Value>Name</Value>
 </Value>
 <Value name="3">
-<Value>IDNumber</Value>
+<Value>Sex</Value>
 </Value>
 <Value name="4">
-<Value>BirthDate</Value>
+<Value>IDNumber</Value>
 </Value>
 <Value name="5">
-<Value>HeightMeter</Value>
+<Value>BirthDate</Value>
 </Value>
 <Value name="6">
-<Value>WeightKg</Value>
+<Value>Age</Value>
 </Value>
 <Value name="7">
-<Value>HomeAddress</Value>
+<Value>HeightMeter</Value>
 </Value>
 <Value name="8">
+<Value>WeightKg</Value>
+</Value>
+<Value name="9">
+<Value>HomeAddress</Value>
+</Value>
+<Value name="10">
 <Value>image</Value>
 </Value>
 </Data>

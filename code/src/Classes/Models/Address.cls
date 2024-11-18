@@ -1,4 +1,4 @@
-Class Classes.Models.Address Extends %Persistent
+Class Classes.Models.Address Extends %Persistent [ SqlTableName = PatientAddress ]
 {
 
 /// 省
