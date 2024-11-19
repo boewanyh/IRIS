@@ -1,4 +1,3 @@
-/// 注册类
 Class Classes.Models.Patient Extends %Persistent
 {
 
@@ -9,7 +8,7 @@ Parameter CURRNTIME = {$ZDATETIME($HOROLOG, 3)};
 Property Name As %String(MAXLEN = 500) [ Required ];
 
 /// 性别
-Property Sex As %String(VALUELIST = ",M,F");
+Property Sex As %String(DISPLAYLIST = ",Male,Female", MAXLEN = 1, VALUELIST = ",M,F") [ SqlColumnNumber = 2, SqlFieldName = Gender ];
 
 /// 身份证号
 Property IDNumber As %String(PATTERN = "18N") [ Required ];
@@ -18,7 +17,7 @@ Property IDNumber As %String(PATTERN = "18N") [ Required ];
 Property BirthDate As %Date;
 
 /// 年龄
-Property Age As %Integer [ SqlComputeCode = {set {*}={BirthDate}}, SqlComputed ];
+Property Age As %Integer [ SqlComputeCode = {Set {*}={BirthDate}}, SqlComputed ];
 
 /// 身高
 Property HeightMeter As %Numeric;
@@ -29,8 +28,8 @@ Property WeightKg As %Numeric;
 /// 家庭地址
 Property HomeAddress As Classes.Models.Address;
 
-/// 照片
-Property image As %Stream.GlobalCharacter;
+/// 介绍
+Property Introduction As %Stream.GlobalCharacter;
 
 /// Index MainIDX On IDNumber [ Idkey ]; //将IDNumber作为表ID
 Index IDNumberIndex On IDNumber [ Unique ];
@@ -78,6 +77,9 @@ Storage Default
 </Value>
 <Value name="10">
 <Value>image</Value>
+</Value>
+<Value name="11">
+<Value>Introduction</Value>
 </Value>
 </Data>
 <DataLocation>^Classes.Models.PatientD</DataLocation>
