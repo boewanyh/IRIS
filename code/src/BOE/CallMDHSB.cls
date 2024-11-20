@@ -15,7 +15,7 @@ ClassMethod Call()
 	
 	
 	s action = "MES0023"
-	s message = "<Request><TradeCode>1012</TradeCode><ExtUserID>wx001</ExtUserID><DepartmentCode></DepartmentCode><StartDate>2024-11-20</StartDate><EndDate>2024-11-20</EndDate><HospitalId>BJMDYY</HospitalId><HospitalId1>我</HospitalId1></Request>"
+	s message = "<Request><TradeCode>1012</TradeCode><ExtUserID>wx001</ExtUserID><DepartmentCode></DepartmentCode><StartDate>2024-11-20</StartDate><EndDate>2024-11-20</EndDate><HospitalId>BJMDYY</HospitalId></Request>"
 	
 	//签名值 --start
 	s unSignStr = "_api_access_key="_OAuth2Header.%apiaccesskey_"&_api_name="_OAuth2Header.%apiname_"&_api_nonce="_OAuth2Header.%apinonce_"&_api_timestamp="_OAuth2Header.%apitimestamp_"&_api_version="_OAuth2Header.%apiversion_"&action="_$zcvt(action,"I","UTF8")_"&message="_$zcvt(message,"I","UTF8")
