@@ -12,7 +12,7 @@ public class CallMDHSB {
             String action = "MES0023";
             String message = "<Request><TradeCode>1012</TradeCode><ExtUserID>wx001</ExtUserID><DepartmentCode></DepartmentCode><StartDate>2024-11-19</StartDate><EndDate>2024-11-19</EndDate><HospitalId>BJMDYY</HospitalId><test>中文</test></Request>";
 
-            // 将 message 转换为字节数组，模拟 RAW 格式
+            // 将 action, message 转换为字节数组，模拟 RAW 格式
             byte[] actionBytes = action.getBytes("ISO-8859-1"); 
             String decodedaction = new String(actionBytes, "ISO-8859-1");
             byte[] messageBytes = message.getBytes("ISO-8859-1"); 
