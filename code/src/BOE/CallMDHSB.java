@@ -3,10 +3,18 @@ package BOE;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
+import java.util.UUID;
 
 public class CallMDHSB {
     public static void main(String[] args) {
         try {
+
+            // 定义请求头参数
+            String apiAccessKey = "yt8R4nwSnnyefoyUt411uwI5ggHLWx_P-gW9wiCoQE0";
+            String apiName = "service";
+            String apiVersion = "1.0";
+            String apiTimeStamp = String.valueOf(System.currentTimeMillis());
+            String apiNonce = UUID.randomUUID().toString();
 
             // 定义 action 和 message
             String action = "MES0023";
@@ -14,13 +22,12 @@ public class CallMDHSB {
 
             // 将 action, message 转换为字节数组，模拟 RAW 格式
             byte[] actionBytes = action.getBytes("ISO-8859-1"); 
-            String decodedaction = new String(actionBytes, "ISO-8859-1");
+            String decodedAction = new String(actionBytes, "ISO-8859-1");
             byte[] messageBytes = message.getBytes("ISO-8859-1"); 
             String decodedMessage = new String(messageBytes, "ISO-8859-1");
 
-
             // 原始字符串
-            String data = "_api_access_key=ak&_api_name=service&_api_nonce=2FDC553E-467F-444F-9C35-802FF7936C68&_api_timestamp=1559467961208&_api_version=1.0&action=" + decodedaction + "&message=" + decodedMessage;
+            String data = "_api_access_key=" + apiAccessKey + "&_api_name=" + apiName + "&_api_nonce=" + apiNonce + "&_api_timestamp=" + apiTimeStamp + "&_api_version=" + apiVersion + "&action=" + decodedAction + "&message=" + decodedMessage;
 
             // 密钥
             String secret = "secret";

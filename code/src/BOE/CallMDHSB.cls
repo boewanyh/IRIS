@@ -8,7 +8,7 @@ ClassMethod Call()
     Set $ZERROR=""
     
     // 初始化 SOAP 和 OAuth2 头对象
-    Set soap = ##class(BOE.SOAP.PUB0016Soap).%New()
+    Set soap = ##class(BOE.SOAP.PUB0013Soap).%New()
     Set OAuth2Header = ##class(BOE.SOAP.s0.OAuth2Header).%New()
     
     // 设置 OAuth2 头信息
