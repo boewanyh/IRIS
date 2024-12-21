@@ -5,7 +5,7 @@ Class Interaction.REST.Calling Extends %RegisteredObject
 ClassMethod SendHttpRequest()
 {
 	/* 创建%Net.HttpRequest的实例，设置实例属性 */
-    s request = ##class(%Net.HttpRequest).%New()
+  s request = ##class(%Net.HttpRequest).%New()
 	s request.Server = "localhost" //IP
 	s request.Port = "52773" //端口
 	s request.Location = "/api/manualapp/resource" //地址
@@ -35,6 +35,9 @@ ClassMethod SendHttpRequest()
 	d jsonObj.%ToJSON(jsonStream) 
 	d request.EntityBody.CopyFrom(jsonStream)
 	s status = request.Post()
+
+	#; /* 发送HTTP DELETE请求 */
+	#; s status = request.Send("DELETE")
 
 	/* 接收HTTP响应 */
 	if $$$ISERR(status){
