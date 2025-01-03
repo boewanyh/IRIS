@@ -1,0 +1,38 @@
+ROUTINE Basics.Errors
+#include %occStatus
+Status
+    /* 获取类方法返回的%Status。成功为1, 错误返回编码和文本信息 */
+    Set newAirport = ##class(Basics.Models.Airport).%New()
+	Set newAirport.Name = "Philadephia International"
+	Set newAirport.Code = "PHL"
+	Set tSC = newAirport.%Save()
+    If $$$ISERR(tSC) { // $$$ISOK:是否成功 $$$ISERR:是否错误
+        Do $SYSTEM.Status.DisplayError(tSC) // 输出到当前设备
+        Set ErrorText = $SYSTEM.Status.GetErrorText() // 获取错误详细信息
+        Quit
+    } 
+
+ErrorHand
+    /* TRY-CATCH */
+    Try {
+        Set ans = 5 / 0
+    } Catch errobj {
+        // 捕获异常后新建实例 %Exception.SystemException
+        Write errobj.Code,!, errobj.Name,!, errobj.Location,!, errobj.Data,!
+        // 设置异常属性 $ZERROR
+        Write $ZERROR,!
+    }
+    /* $ZTRAP */
+    Write $$TraditionalErrorHand(),!
+    Quit
+
+TraditionalErrorHand(){
+    /* $ZTRAP 老的异常处理 */
+    Set $ZTRAP = "Error"
+    Set ans = 5/0
+    Quit ans
+Error
+    Set $ZTRAP = "" //避免无线循环
+    Set err = $ZERROR
+    Quit err
+}

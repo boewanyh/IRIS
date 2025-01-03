@@ -1,0 +1,16 @@
+ROUTINE Basics.Transactions
+ROU        
+    /* 事务 */
+    Set $ZTRAP = "ERROR"
+    Tstart
+    Write "Transaction1 Start",!
+    Set ^ZGLO(1)=100
+    Set ^ZGLO=error
+    Set ^ZGLO(1,1)=200 
+    Tcommit 
+    Write "Transaction1 Committed",!
+    Quit
+ERROR        
+    Trollback 1
+    Write !,"Transaction failed." 
+    Quit

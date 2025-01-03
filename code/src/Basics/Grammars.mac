@@ -1,0 +1,270 @@
+ROUTINE Basics.Grammars
+#define StringMacro "Hello, World!" // 使用 $$$StringMacro
+DataTypes
+    /* 数据类型 */
+    //字符串
+    Set string = "" // 空字符串
+    Set string = $CHAR(0) // 空，十六进制值为 00 的字符
+    Set string = "This string has ""quotes"" in it." // 转义引号
+    Write string,!
+    Set a = "Inter"
+    Set b = "Systems"
+    Set string = a_b //字符串连接
+    Write string,!
+    Write $EXTRACT("123456", 2, 4),! // 234 截取
+    Write $LENGTH("a^b^c^d","^"),! // 4 长度
+    Write $PIECE("a^b^c^d", "^", 2),! // b 分隔符取值
+    Write $PIECE("a^b^c^d", "^", 2, 3),! // b^c 分隔符取值
+    Write $FIND("Once upon a time...", "upon"),! // 搜索字符串，并返回后面字符的位置; 未找到返回0
+    Write $REPLACE("red black red wite", "red", "green"),! // green black green wite 字符串替换
+    Write $TRANSLATE("red black red wite", "rbw", "RBW"),! // Red Black Red Wite 逐字符替换
+    Write $ZCONVERT("abc","U"),! // ABC 转大写
+    Write $ZCONVERT("ABC","L"),! // abc 转小写
+    Write $ZCONVERT("中文","O","UTF8"),! // 输出编码转换
+    Write $ZCONVERT($ZCONVERT("中文","O","UTF8"),"I","UTF8"),! // 输入编码转换
+
+    //数字
+    Write +"0000.7dwarves",! // .7
+    Write "7dwares" + 2,! // 9
+    Write "+24/7" + 2,! // 26
+    Write "7.2.34" + 2,! // 9.2
+    Write 3e4,! // 30000
+    Write $FNUMBER(".25198", "", 3),! // 0.252 格式化 四舍五入
+    Write $FNUMBER("-6.25198", "-", 3),! // 6.252 绝对值
+    Write $JUSTIFY("6.25198", "", 3),! // 6.252 四舍五入
+   
+    //对象
+    Set newAirport = ##class(Basics.Models.Airport).%New()
+    Write newAirport,!
+    Write $ISOBJECT(newAirport),! // 是否是对象
+
+    //持久多维数组（全局）
+    Set ^x("a") = 1
+    Set ^x("a","b") = 2
+    Set ^y("a") = 1
+    ZWrite ^x("a") // ^x("a")=1 ^x("a","b")=2
+    Write $DATA(^x("a")),! // 11 存在有数据且有后代
+    Write $DATA(^x("a","b")),! // 1 存在且有数据，没有后代
+    Write $DATA(^y),! // 10 有后代,但本身不包含数据。引用本身会UNDEFINED
+    Write $DATA(^z),! // 0 未定义
+
+    //布尔 非0为真, 非数字字符串为假
+    If -7 {Write "true",! }
+    Else { Write "false",! }
+    If "abc" {Write "true",! }
+    Else { Write "false",! }
+
+    //日期
+    Write $HOROLOG,! // 日期,时间 67148,55413
+    Write $NOW(),! // 日期,时间.秒 67148,55413.153962305
+    Write $ZDATETIME($HOROLOG, 3),! // 转为显示格式 2024-11-04 15:23:33
+    Write $ZDATE(67148, 3),! // 2024-11-04
+    Write $ZDATEH("2024-11-04", 3),! // 67148
+    Write $ZTIME(55413),! // 15:23:33
+    Write $ZTIMEH("15:23:33"),! // 55413
+
+Variables
+    /* 变量 */
+    //局部变量：进程内存中，程序块访问;所有命名空间可访问
+    New //所有变量未定义
+    Set myvar1 = 1
+    Set myvar2 = 2
+    New myvar1 // 未定义myvar1
+    New (myvar2) // 除myvar2外未定义
+    Set %zvar3 = 3 // 公共变量
+    Write myvar2,!
+    Kill myvar2 //删除局部变量
+
+    //全局变量：数据库中，命名空间访问
+    Set ^myglobal = "stored in the current namespace" // 当前命名空间访问，或作映射
+    Set ^%zmyglobal = "Use in all namespace" // 百分比变量：所有命名空间可访问
+    Write ^|"BOE"|myglobal,! // 访问指定命名空间全局变量
+
+    //进程私有全局变量：进程访问，结束删除 - 旨在用于大数据值，替代Temp，在进程终止时自动清理;所有命名空间可访问
+    Set ^||name = "Tom"
+    
+    //系统变量：$前缀
+    Write $JOB,! // 进程id
+
+OperatorsAndExpressions
+    /* 运算符和表达式 */
+    //优先级：严格按照从左到右
+    Write 1 + 2 * 3,! // 9
+    Write 1 + (2 * 3),! // 7
+    Write 3 && 2 = 2,! // 0
+
+    //逻辑表达式：非零数值为真，非数字字符串为假
+    //常规逻辑运算符（& 和 !） - 所有被执行
+    If $$One() & $$Two() {
+        Write "True",!
+    }Else {
+        Write "false",!
+    }
+    //短路逻辑运算符（&& 和 ||）- 结果确定后其他不执行
+    If $$One() && $$Two() {
+        Write "True",!
+    }Else {
+        Write "false",!
+    }
+    If $$One() , $$Two() { //,与&&效果一样
+        Write "True",!
+    }Else {
+        Write "false",!
+    }
+
+    //算数运算符
+    Write + "32 dollars and 64 cents",! // 32 将字符串的字符解析为数字,直到遇到不能解释为数字的字符
+    Write 2936.22 + 301.45,! //  3237.67 加
+    Write 2936.22 - 301.45,! // 2634.77 减
+    Write 9 * 5.5,! // 49.5 乘
+    Write 9 / 5.5,! // 1.636363636363636364 除
+    Write "355 \ 113 = ", 355 \ 113,! // 3 整除
+    Write "37 # 10 = ",37 # 10,! // 7 取余
+    Write "9 ** 2 = ",9 ** 2,! // 81 指数
+
+    //数字关系运算符
+    Write 9 < 6 ,! // 0 
+    Write 9 '< 6 ,! // 1 不小于
+    Write 9 <= 6 ,! // 0 
+    Write 9 '= 6 ,! // 1 不等于
+
+    //逻辑比较运算符
+    Write 1 & 0 ,! // 0 与
+    Write 1 && 0 ,! // 0 与
+    Write 1 ! 0 ,! // 1 或
+    Write 1 || 0 ,! // 1 或
+    Write '1 ,! //0 非
+
+    //字符串关系运算符
+    Write "abc" = "abc" ,! // 1 等于
+    Write "abc" [ "a" ,! // 1 包含
+    Write "abc" '[ "a" ,! // 0 不包含
+
+    //模式匹配运算符(?)
+    Set ssn="123-45-6789"
+    Set match = ssn ? 3N1"-"2N1"-"4N
+    Write match ,!
+
+    //间接运算符(@):对命令行、命令或命令参数的部分或全部的动态运行时替换
+    Set x = "One()"
+    Do @x // One
+
+    //宏
+    Write $$$StringMacro,!
+
+One()
+    Write "One",!
+    Quit 0
+
+Two()
+    Write "Two",!
+    Quit 1
+
+Commands
+    /* 命令 */
+    Set a = 1, b = 2
+    Set (c, d) = 3
+    Write:a=1 1 ,! // :后置条件表达式
+
+    Do Two^Basics.Grammars() // 运行例程
+    Do ##class(Basics.Models.Airport).DisplayAirports() // 运行类方法
+
+    Set x = "d Two^Basics.Grammars()"
+    Xecute x // 可用于动态运行
+
+    Job One() // job 另起进程运行
+
+    //条件语句
+    Set x = 1
+    If x = 1 {
+        Write "x = 1",!
+    } ElseIf x = 2 {
+        Write "x = 2",!
+    } Else {
+        Write "x = ?",!
+    }
+
+    Set x =  $CASE(a, 1:"a=1", 2:"a=2", :"")
+
+    //循环语句
+    For i = 1 : 1 : 5 {
+        Write i,!
+    }
+    For x = "a","b","c" {
+        Write x,!
+    }
+    Set x = 0
+    For {
+        Quit:x=5
+        Set x = x + 1
+        Write x,!   
+    }
+    Set x = 0
+    While(x < 5) {
+        Set x = x + 1
+        Write x,! 
+    }
+    Set x = 0
+    Do {
+        Set x = x + 1
+        Write x,!
+    }While(x < 5)
+
+    //输入输出
+    Set jobj = {"name":"Fred","city":"Bedrock"}
+    Write jobj,! // 7@%Library.DynamicObject
+    ZWrite jobj // jobj={"name":"Fred","city":"Bedrock"}  ; <DYNAMIC OBJECT>
+    Set fullList = $LISTBUILD("Red","Blue","Green","Yellow")
+    ZWrite fullList // fullList=$lb("Red","Blue","Green","Yellow")
+    Set ^a = "a", ^a(0) = 0, ^a(1) = 1
+    ZWrite ^a //^a="a" ^a(0)=0 ^a(1)=1
+
+    //q:退出代码块 return:退出例程
+    For i = 1 : 1 : 5 {
+        //q:i=1
+        Return:i=1
+    }
+    Write "END",!
+
+main
+    /* 自定义代码模块 */
+    Do Add1(1, 2) // 函数调用
+    Write $$Add2(1, 2),! // 过程调用
+    Write c,! // 公共变量
+    Set output = $$Add3(1, 2, .result) // 引用传递
+    Write result,!
+    Write $$Add4(1, 2, 3),! // 可变参数
+    Set d(1) =1
+    Set d(2) =2
+    Do Add5(.d) // 可变参数引用传递
+
+
+Add1(a, b)
+    /* 函数 调用： Add^Basics.Grammars(1,3)*/
+    Write a + b,!
+
+Add2(a, b) [c, d] PUBLIC {
+    /* 过程 c,d 为公共变量。调用： $$Add^Basics.Grammars(1,3)*/
+    Set c = "c"
+    Return a + b
+}
+Add3(a, b, &c) {
+   Set c = a + b
+   Return 0     
+}
+Add4(pars...) { // 可变参数
+    Set sum = 0
+    For i = 1 : 1 : pars {
+        Set sum = sum + pars(i)
+    }
+    Quit sum
+}
+Add5(&pars...)
+    Set sum = 0
+    Set item = ""
+    For {
+        Set item = $ORDER(pars(1,item))
+        Quit:item=""
+        Set sum = sum + item
+    }
+    Write sum,!

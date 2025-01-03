@@ -1,0 +1,25 @@
+ROUTINE Basics.Locks
+AccessData
+    // 带下标的锁表名称有性能优化！
+    // 如果显式锁定^x(1)，会隐式锁定子节点，例如^x(1,2)
+    /* 控制对全局变量数据的访问 */
+    Lock +^MyGlobal(1) // 加锁 +^MyGlobal(1):5 超时5s
+    Set ^MyGlobal(1) = 1
+    Lock -^MyGlobal(1) // 解锁
+
+SameActivity
+    /* 防止程序同时运行 */
+    Lock ^AppStateData("NightlyBatch"):0 // 超时值为 0 表示尝试一次，然后超时
+    If '$TEST { // 超时内锁定成功,$TEST=1; 否则$TEST=0
+        Write "You cannot run this routine right now."
+        Write !, "This routine is currently being run by user: "_^AppStateData("NightlyBatch","user")
+        Quit
+    }
+    Set ^AppStateData("NightlyBatch")=1
+    Set ^AppStateData("NightlyBatch","user")=$USERNAME
+    Set ^AppStateData("NightlyBatch","starttime")=$HOROLOG
+    
+    //main routine activity omitted from example
+    
+    Kill ^AppStateData("NightlyBatch")
+    Lock -^AppStateData("NightlyBatch")
